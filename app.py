@@ -4,63 +4,67 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# Replace with your details
 FULL_NAME = "sahana_bhat"
 DOB = "26052004"
 EMAIL = "isahanabhat@gmail.com"
-ROLL_NUMBER = "22BCE2889"
+ROLL_NO = "22BCE2889"
+
 
 @app.route('/bfhl', methods=['POST'])
-def bfhl():
+def bfhl_handler():
     try:
-        data = request.json.get("data", [])
+        incoming = request.json.get("data", [])
 
-        even_numbers, odd_numbers, alphabets, special_chars = [], [], [], []
-        total_sum = 0
-        concat_alpha = ""
+        evens = []
+        odds = []
+        letters = []
+        specials = []
 
-        for item in data:
-            if item.isdigit():  # numeric
-                num = int(item)
-                if num % 2 == 0:
-                    even_numbers.append(item)
+        total = 0
+        joined_alpha = ""
+
+        for val in incoming:
+            if val.isdigit():
+                n = int(val)
+                if n % 2 == 0:
+                    evens.append(val)
                 else:
-                    odd_numbers.append(item)
-                total_sum += num
-            elif item.isalpha():  # alphabetic
-                alphabets.append(item.upper())
-                concat_alpha += item
-            else:  # special characters
-                special_chars.append(item)
-
-        # reverse order + alternating caps
-        rev_concat = ""
-        toggle = True
-        for ch in concat_alpha[::-1]:
-            if toggle:
-                rev_concat += ch.upper()
+                    odds.append(val)
+                total += n
+            elif val.isalpha():
+                letters.append(val.upper())
+                joined_alpha += val
             else:
-                rev_concat += ch.lower()
-            toggle = not toggle
+                specials.append(val)
 
-        response = {
+        rev_str = ""
+        flip = True
+        for c in joined_alpha[::-1]:
+            if flip:
+                rev_str += c.upper()
+            else:
+                rev_str += c.lower()
+            flip = not flip
+
+        output = {
             "is_success": True,
             "user_id": f"{FULL_NAME.lower()}_{DOB}",
             "email": EMAIL,
-            "roll_number": ROLL_NUMBER,
-            "odd_numbers": odd_numbers,
-            "even_numbers": even_numbers,
-            "alphabets": alphabets,
-            "special_characters": special_chars,
-            "sum": str(total_sum),
-            "concat_string": rev_concat
+            "roll_number": ROLL_NO,
+            "odd_numbers": odds,
+            "even_numbers": evens,
+            "alphabets": letters,
+            "special_characters": specials,
+            "sum": str(total),
+            "concat_string": rev_str
         }
-        return jsonify(response), 200
 
-    except Exception as e:
+        return jsonify(output), 200
+
+    except Exception as err:
         return jsonify({
             "is_success": False,
-            "error": str(e)
+            "error": str(err)
         }), 500
 
 
