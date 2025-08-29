@@ -11,7 +11,7 @@ ROLL_NO = "22BCE2889"
 
 
 @app.route('/bfhl', methods=['POST'])
-def bfhl_handler():
+def bfhl():
     try:
         incoming = request.json.get("data", [])
 
