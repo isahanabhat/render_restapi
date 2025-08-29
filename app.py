@@ -5,10 +5,10 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Replace with your details
-FULL_NAME = "john_doe"
-DOB = "17091999"
-EMAIL = "john@xyz.com"
-ROLL_NUMBER = "ABCD123"
+FULL_NAME = "sahana_bhat"
+DOB = "26052004"
+EMAIL = "isahanabhat@gmail.com"
+ROLL_NUMBER = "22BCE2889"
 
 @app.route('/bfhl', methods=['POST'])
 def bfhl():
